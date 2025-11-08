@@ -9,8 +9,8 @@ stages:
       size: 1915795
     - path: src/preprocess.py
       hash: md5
-      md5: b8becdff8ad03dedaacfa8998a5f92e0
-      size: 2018
+      md5: 8b477e547f63d80f515047b43495f927
+      size: 1961
     params:
       params.yaml:
         preprocess:
@@ -33,8 +33,8 @@ stages:
       nfiles: 4
     - path: src/train_evaluate.py
       hash: md5
-      md5: 4b87cbc9a8ca0fdab84ed97f43b069de
-      size: 2855
+      md5: 59c6bc7e156602fa231ad05441d5087a
+      size: 2811
     params:
       params.yaml:
         train.linear_regression:
@@ -58,8 +58,8 @@ stages:
       nfiles: 4
     - path: src/train_evaluate.py
       hash: md5
-      md5: 4b87cbc9a8ca0fdab84ed97f43b069de
-      size: 2855
+      md5: 59c6bc7e156602fa231ad05441d5087a
+      size: 2811
     params:
       params.yaml:
         train.random_forest:
@@ -85,31 +85,31 @@ stages:
       nfiles: 4
     - path: src/train_evaluate.py
       hash: md5
-      md5: 4b87cbc9a8ca0fdab84ed97f43b069de
-      size: 2855
+      md5: 59c6bc7e156602fa231ad05441d5087a
+      size: 2811
     params:
       params.yaml:
         train.gradient_boosting:
           n_estimators: 150
           learning_rate: 0.1
-          max_depth: 5
+          max_depth: 10
           random_state: 42
     outs:
     - path: metrics/metrics_gradient_boosting.json
       hash: md5
-      md5: d8174a96da20698ccc6d50bf7acdb09a
-      size: 66
+      md5: b4b8fd256910bf4f39706e4b0aa991fc
+      size: 68
     - path: models/gradient_boosting.joblib
       hash: md5
-      md5: bdccca01b26ebe9ae18377def5317a6b
-      size: 682520
+      md5: dd5384e91e0df2bfdbd745dd4ae2d40c
+      size: 9974408
   select_best:
     cmd: python src/select_best.py
     deps:
     - path: metrics/metrics_gradient_boosting.json
       hash: md5
-      md5: d8174a96da20698ccc6d50bf7acdb09a
-      size: 66
+      md5: b4b8fd256910bf4f39706e4b0aa991fc
+      size: 68
     - path: metrics/metrics_linear_regression.json
       hash: md5
       md5: 15f65e718faf1e95a3d7a27e7b737c3e
@@ -120,8 +120,8 @@ stages:
       size: 67
     - path: src/select_best.py
       hash: md5
-      md5: 1e85cbe134d1ed246b3b02243293907c
-      size: 2139
+      md5: 944be0fdeddcd26378b4c30a4560830e
+      size: 2161
     params:
       params.yaml:
         select_best:
@@ -129,5 +129,5 @@ stages:
     outs:
     - path: report.md
       hash: md5
-      md5: fe9eff609381a68cffa6a4416d5d1a6b
+      md5: 0e1d737d0f53f44eff36394e4ca065f2
       size: 425

@@ -4,7 +4,7 @@ Resultados de todos los experimentos:
 
 |     rmse |       r2 | model             |
 |---------:|---------:|:------------------|
-| 0.481355 | 0.823183 | gradient_boosting |
+| 0.47405  | 0.828509 | gradient_boosting |
 | 0.544333 | 0.773889 | random_forest     |
 | 0.745581 | 0.575788 | linear_regression |
 
@@ -13,4 +13,4 @@ Resultados de todos los experimentos:
 ## Mejor Modelo
 
 El mejor modelo encontrado fue **gradient_boosting**.
-Métrica (rmse): **0.4814**
+Métrica (rmse): **0.4741**
