@@ -9,7 +9,7 @@ def select_best_model(metrics_path, report_file, params):
 
     metrics_files = list(Path(metrics_path).glob('*.json'))
     if not metrics_files:
-        print("No se encontraron archivos de métricas.")
+        print("No se encontraron Archivos de manejo de metricas.")
         return
 
     metric_to_optimize = params['metric_to_optimize']
@@ -32,6 +32,7 @@ def select_best_model(metrics_path, report_file, params):
     results_df = pd.DataFrame(results)
     results_df = results_df.sort_values(by=metric_to_optimize, ascending=lower_is_better)
 
+    # Esta es la línea 29 (donde te da el error)
     best_model = results_df.iloc[0]
 
     # Generar reporte
@@ -52,11 +53,11 @@ if __name__ == "__main__":
         print("Error: params.yaml no encontrado.")
         sys.exit(1)
     except Exception as e:
-        print(f"Error al leer params.yaml: {e}") # Ayuda para debuggear
+        print(f"Error al leer params.yaml: {e}")
         sys.exit(1)
 
     metrics_dir = 'metrics'
     report_path = 'report.md'
 
     select_best_model(metrics_dir, report_path, params['select_best'])
-    print(f"Reporte de selección de modelo guardado en {report_path}")
+    print(f"Reporte de modelo guardado en {report_path}")

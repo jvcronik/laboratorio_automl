@@ -9,7 +9,7 @@ def preprocess_data(raw_data_path, processed_data_path, params):
     """
     Carga los datos, los divide y escala.
     """
-    # Crear directorios de salida si no existen
+    # Crear directorios de salida.
     Path(processed_data_path).mkdir(parents=True, exist_ok=True)
     
     # Cargar datos
@@ -27,7 +27,6 @@ def preprocess_data(raw_data_path, processed_data_path, params):
     )
     
     # Escalar características (solo numéricas)
-    # En este dataset, todas son numéricas
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)

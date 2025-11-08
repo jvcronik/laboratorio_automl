@@ -43,7 +43,7 @@ def train_evaluate(model_name, params, processed_data_path, model_output_path, m
     rmse = np.sqrt(mean_squared_error(y_test, y_pred))
     r2 = r2_score(y_test, y_pred)
     
-    # Guardar métricas [cite: 2054]
+    # Guardar métricas.
     metrics = {
         'rmse': rmse,
         'r2': r2
@@ -55,9 +55,9 @@ def train_evaluate(model_name, params, processed_data_path, model_output_path, m
     joblib.dump(model, model_output_path)
 
 if __name__ == "__main__":
-    # Parser para recibir el nombre del modelo
+    # Recibir el nombre del modelo
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model', type=str, required=True, help="Nombre del modelo a entrenar (ej: random_forest)")
+    parser.add_argument('--model', type=str, required=True, help="Nombre del modelo a entrenar")
     args = parser.parse_args()
 
     # Cargar params.yaml
