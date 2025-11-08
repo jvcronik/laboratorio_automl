@@ -1,0 +1,22 @@
+preprocess:
+  test_size: 0.2
+  random_state: 42
+  target_column: 'MedHouseVal'
+
+train:
+  linear_regression:
+    fit_intercept: True
+
+  random_forest:
+    n_estimators: 100
+    max_depth: 10
+    random_state: 42
+
+  gradient_boosting:
+    n_estimators: 150
+    learning_rate: 0.1
+    max_depth: 5
+    random_state: 42
+
+select_best:
+  metric_to_optimize: 'rmse'

@@ -1,0 +1,133 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+    - path: data/dataset_v1.csv
+      hash: md5
+      md5: fa9fe4cf24f70b69ac65fb33062ddf34
+      size: 1915795
+    - path: src/preprocess.py
+      hash: md5
+      md5: b8becdff8ad03dedaacfa8998a5f92e0
+      size: 2018
+    params:
+      params.yaml:
+        preprocess:
+          test_size: 0.2
+          random_state: 42
+          target_column: MedHouseVal
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: f5204bd5af7a1b89dcc1e7dd99f95cd4.dir
+      size: 3455729
+      nfiles: 4
+  train_lr:
+    cmd: python src/train_evaluate.py --model linear_regression
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: f5204bd5af7a1b89dcc1e7dd99f95cd4.dir
+      size: 3455729
+      nfiles: 4
+    - path: src/train_evaluate.py
+      hash: md5
+      md5: 4b87cbc9a8ca0fdab84ed97f43b069de
+      size: 2855
+    params:
+      params.yaml:
+        train.linear_regression:
+          fit_intercept: true
+    outs:
+    - path: metrics/metrics_linear_regression.json
+      hash: md5
+      md5: 15f65e718faf1e95a3d7a27e7b737c3e
+      size: 67
+    - path: models/linear_regression.joblib
+      hash: md5
+      md5: ac5f5007f36a9516f5879b6e84de0287
+      size: 1033
+  train_rf:
+    cmd: python src/train_evaluate.py --model random_forest
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: f5204bd5af7a1b89dcc1e7dd99f95cd4.dir
+      size: 3455729
+      nfiles: 4
+    - path: src/train_evaluate.py
+      hash: md5
+      md5: 4b87cbc9a8ca0fdab84ed97f43b069de
+      size: 2855
+    params:
+      params.yaml:
+        train.random_forest:
+          n_estimators: 100
+          max_depth: 10
+          random_state: 42
+    outs:
+    - path: metrics/metrics_random_forest.json
+      hash: md5
+      md5: 3e4d04805a616b5051cd92ae5daca800
+      size: 67
+    - path: models/random_forest.joblib
+      hash: md5
+      md5: 466415e73021434032e0af86bddb5869
+      size: 10220113
+  train_gb:
+    cmd: python src/train_evaluate.py --model gradient_boosting
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: f5204bd5af7a1b89dcc1e7dd99f95cd4.dir
+      size: 3455729
+      nfiles: 4
+    - path: src/train_evaluate.py
+      hash: md5
+      md5: 4b87cbc9a8ca0fdab84ed97f43b069de
+      size: 2855
+    params:
+      params.yaml:
+        train.gradient_boosting:
+          n_estimators: 150
+          learning_rate: 0.1
+          max_depth: 5
+          random_state: 42
+    outs:
+    - path: metrics/metrics_gradient_boosting.json
+      hash: md5
+      md5: d8174a96da20698ccc6d50bf7acdb09a
+      size: 66
+    - path: models/gradient_boosting.joblib
+      hash: md5
+      md5: bdccca01b26ebe9ae18377def5317a6b
+      size: 682520
+  select_best:
+    cmd: python src/select_best.py
+    deps:
+    - path: metrics/metrics_gradient_boosting.json
+      hash: md5
+      md5: d8174a96da20698ccc6d50bf7acdb09a
+      size: 66
+    - path: metrics/metrics_linear_regression.json
+      hash: md5
+      md5: 15f65e718faf1e95a3d7a27e7b737c3e
+      size: 67
+    - path: metrics/metrics_random_forest.json
+      hash: md5
+      md5: 3e4d04805a616b5051cd92ae5daca800
+      size: 67
+    - path: src/select_best.py
+      hash: md5
+      md5: 1e85cbe134d1ed246b3b02243293907c
+      size: 2139
+    params:
+      params.yaml:
+        select_best:
+          metric_to_optimize: rmse
+    outs:
+    - path: report.md
+      hash: md5
+      md5: fe9eff609381a68cffa6a4416d5d1a6b
+      size: 425

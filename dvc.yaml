@@ -1,0 +1,65 @@
+stages:
+  # Etapa de Preprocesamiento
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+    - src/preprocess.py
+    - data/dataset_v1.csv
+    params:
+    - preprocess
+    outs:
+    - data/processed # DVC rastreará este directorio
+
+  # Etapa de Entrenamiento y Evaluación (para cada modelo)
+  train_lr:
+    cmd: python src/train_evaluate.py --model linear_regression
+    deps:
+    - src/train_evaluate.py
+    - data/processed
+    params:
+    - train.linear_regression
+    outs:
+    - models/linear_regression.joblib
+    metrics:
+    - metrics/metrics_linear_regression.json:
+        cache: false # Las métricas son archivos ligeros, no necesitan cache
+
+  train_rf:
+    cmd: python src/train_evaluate.py --model random_forest
+    deps:
+    - src/train_evaluate.py
+    - data/processed
+    params:
+    - train.random_forest
+    outs:
+    - models/random_forest.joblib
+    metrics:
+    - metrics/metrics_random_forest.json:
+        cache: false
+        
+  train_gb:
+    cmd: python src/train_evaluate.py --model gradient_boosting
+    deps:
+    - src/train_evaluate.py
+    - data/processed
+    params:
+    - train.gradient_boosting
+    outs:
+    - models/gradient_boosting.joblib
+    metrics:
+    - metrics/metrics_gradient_boosting.json:
+        cache: false
+        
+  # Etapa de Selección de Modelo
+  select_best:
+    cmd: python src/select_best.py
+    deps:
+    - src/select_best.py
+    - metrics/metrics_linear_regression.json
+    - metrics/metrics_random_forest.json
+    - metrics/metrics_gradient_boosting.json
+    params:
+    - select_best
+    outs:
+    - report.md:
+        cache: false # El reporte tampoco necesita cache
